@@ -9,4 +9,19 @@ I have tested this code using 3 compilers on solaris - clang, cc, and gcc.  So f
 gcc is giving the best results.  With clang and cc I am getting a memory fault in the
 ExpandText code.  Need to chase that down real soon now.
 
-This code is also known to work on cygwin with gcc.  
+This code is also known to work on cygwin with gcc, ubuntu, and solaris.
+
+TO BUILD:
+
+git the code to your machine.
+
+cd to the macro directory
+touch NEWS
+touch README
+touch AUTHORS
+sh ./autogen.sh
+./configure
+make
+make install
+
+
