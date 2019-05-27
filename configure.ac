@@ -15,13 +15,14 @@
 
 #AC_INIT(macro, 2.0 , lbmgmusic@gmail.com)
 #AC_INIT(macro)
-AC_INIT(src)
-
+AC_INIT(macro , 1.0)
+AC_LANG(C)
 #AC_CONFIG_SRCDIR([macro.c])
 #AC_CONFIG_HEADER([macro.h])
 
 #AM_INIT_AUTOMAKE(macro, main)
-AM_INIT_AUTOMAKE(macro, 1.0.0)
+#AM_INIT_AUTOMAKE(macro,1.0)
+AM_INIT_AUTOMAKE
 
 # Checks for programs.
 # --------------------
