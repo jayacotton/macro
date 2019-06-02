@@ -1,0 +1,13 @@
+macro: global.c macro.c main.c process.c util.c
+	zcc +cpm -O3 -vn -s -m --list -DCPM -c global.c 
+	zcc +cpm -O3 -vn -s -m --list -DCPM -c macro.c 
+	zcc +cpm -O3 -vn -s -m --list -DCPM -c main.c 
+	zcc +cpm -O3 -vn -s -m --list -DCPM -c process.c 
+	zcc +cpm -O3 -vn -s -m --list -DCPM -c util.c 
+	zcc +cpm -create-app -omacro main.o process.o util.o macro.o global.o
+
+clean:
+	rm *.o *.err *.lis *.def *.sym *.exe *.COM macro
+
+install:
+	sudo cp ./*.COM /var/www/html/.
