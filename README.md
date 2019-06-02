@@ -24,4 +24,9 @@ sh ./autogen.sh
 make
 make install
 
+After these steps you can make -f Makefile.z80 ; make -f Makefile.z80 install
+This will create a macro.com file for cp/m.  This allows you to run macro on 
+cp/m as well as on linux, solaris, windows/cygwin etc.
+
+
 
