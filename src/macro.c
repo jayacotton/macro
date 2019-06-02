@@ -128,6 +128,7 @@
 #include <stdlib.h>
 #include "macro.h"
 #include <stdlib.h>
+
 /* because its not in the string.h file */
 #ifndef CPM
 char *strcasestr (const char *haystack, const char *needle);
@@ -1034,7 +1035,7 @@ FindWord (char *in, int index)
 
   if (*cc == '\"')
     {				/* quote at front of string */
-	cc++;
+      cc++;
       while (*cc)
 	{			/* run down to end of quoted string */
 	  if (*cc == '\"')
@@ -1086,8 +1087,8 @@ ParseParm (char *text, char *values)
 
 
   /* need to protect the input text */
-  memset (ltext,0,80);
-  memset (vtext,0,80);
+  memset (ltext, 0, 80);
+  memset (vtext, 0, 80);
   strcpy (ltext, text);
   strcpy (vtext, values);
 
@@ -1119,7 +1120,7 @@ on extra data. */
 	  if (*vc == '\"')
 	    {			/* quoted string */
 	      lvc = FindWord (vc, 0);
-		/* made it vc since findword returns pointer to end of string */
+	      /* made it vc since findword returns pointer to end of string */
 	      AddLabel (lp, lvc);
 /* dont see this working at all */
 	      vc += strlen (lvc) + 1;
@@ -1133,10 +1134,10 @@ on extra data. */
 	      lc = FindWord (vc, i);
 	    }
 	  vc += strlen (lc) + 1;
-	  if(strlen(lc) == 0)
-		AddLabel(lp,NULL);
+	  if (strlen (lc) == 0)
+	    AddLabel (lp, NULL);
 	  else
-	  	AddLabel (lp, lc);
+	    AddLabel (lp, lc);
 	}
     }
 }
@@ -1610,8 +1611,8 @@ Find (char *buff)
       exit (3);
     }
   /* since the max instruction len is 7 */
-  if(strlen(buff) >= 8) 
-	return 0;   
+  if (strlen (buff) >= 8)
+    return 0;
   for (i = 0; Instructions[i].value; i++)
     {
       if (!strcasecmp (Instructions[i].OP, buff))
