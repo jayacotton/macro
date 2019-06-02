@@ -28,5 +28,15 @@ After these steps you can make -f Makefile.z80 ; make -f Makefile.z80 install
 This will create a macro.com file for cp/m.  This allows you to run macro on 
 cp/m as well as on linux, solaris, windows/cygwin etc.
 
+TO RUN:
+macro <filename>    the file is assumed to be name.mac
+toupper name.asm     fix the case of the file text to all upper case.
+b:asm name          assemble the file.
+load name.hex        link it up (sorta).
+  
+on linux;
 
+macro <filename>
+asm8080 (or what ever flavor you want to run) filename.asm -l
+* you now have a filename.hex and a filename.bin
 
