@@ -5,11 +5,14 @@
 #include "macro.h"
 #include <stdlib.h>
 #include <malloc.h>
+#include <mcheck.h>
 
 extern void Process0 (FILE *);
 extern void Process1 (FILE *);
 
+#ifdef CPM
 HEAPSIZE (10000);
+#endif
 
 void
 print_version ()
@@ -35,7 +38,9 @@ main (int argc, char *argv[])
   level = 0;
 #else
   heapinit (10000);
+	srand(8520474);
 #endif
+mtrace();
   if (argc < 2)
     {
       print_version ();

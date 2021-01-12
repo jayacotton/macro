@@ -627,7 +627,7 @@ Aif (char *name, char *string)
   char *d = NULL;
   char cond[24];
   int binary = 0;
-  int cd;
+  int cd = 0;
   char *cc;
   int res = 0;
 
@@ -1149,8 +1149,8 @@ ExpandText (MACRO_RECORD * record)
   char word[80];
   int globin = 0;
   char sys[9];
-  long s;
-  char bigbuff[160];
+  unsigned long s;
+  char bigbuff[170];
   SYMBOL *lsymb;
 
 
@@ -1158,7 +1158,7 @@ ExpandText (MACRO_RECORD * record)
   s = random ();
 #else
   /* need better way to get this number */
-  s = 34567;
+  s = rand();
 #endif
   snprintf (sys, 9, "%06d", (int) s);
   memset (bigbuff, 0, 160);
@@ -1260,10 +1260,15 @@ Part of buff has all the input parameters for this expansion.
       if (strstr (lbuff, "$sysin"))
 	{
 	  strncpy (strstr (lbuff, "$sysin"), sys, 6);
+	}else if (strstr(lbuff,"$SYSIN"))
+	{
+	  strncpy (strstr (lbuff, "$SYSIN"), sys, 6);
 	}
       if (strstr (lbuff, "$sysin"))
 	{
 	  strncpy (strstr (lbuff, "$sysin"), sys, 6);
+	}else if (strstr(lbuff,"$SYSIN")){
+	  strncpy (strstr (lbuff, "$SYSIN"), sys, 6);
 	}
       memset (word, 0, 80);
       cc = GetWord (word, cc);
@@ -1428,8 +1433,8 @@ Part of buff has all the input parameters for this expansion.
 	  {
 	    char *lab;
 	    char newlab[80];
-	    char *work, *bc;
-	    work = calloc (1, strlen (parameterbuffer));
+	    char work[80], *bc;
+	    //work = calloc (1, strlen (parameterbuffer));
 	    bc = NULL;
 	    strcpy (work, parameterbuffer);
 	    memset (newlab, 0, 80);
@@ -1465,6 +1470,7 @@ Part of buff has all the input parameters for this expansion.
 			*cc = '\0';
 			snprintf (newlab, 80, work, lab);
 		      }
+//free(work);
 		  }
 		else
 		  {
@@ -1519,7 +1525,7 @@ Part of buff has all the input parameters for this expansion.
 			  }
 		      }
 		  }
-	      skipit:snprintf (bigbuff, 160, "%s\t%s\t%s\t; %s",
+	      skipit:snprintf (bigbuff, 170, "%s\t%s\t%s\t; %s",
 			  labelbuffer, word, newlab,
 			  ln->line);
 		memset (newlab, 0, 80);
@@ -1527,6 +1533,7 @@ Part of buff has all the input parameters for this expansion.
 		ListOut ('\n');
 		expandstate |= DONTLIST;
 	      }
+//free(work);
 	  }
 	  break;
 	}
@@ -1701,6 +1708,10 @@ LineOut (char *buf)
     {
       fprintf (listfile, "%s", buf);
       fprintf (outfile, "%s", buf);
+#ifdef CPM
+      fprintf (listfile, "\r");
+      fprintf (outfile, "\r");
+#endif
     }
 }
 
@@ -1710,6 +1721,12 @@ ListOut (char c)
 {
   if (PassState)
     {
+#ifdef CPM
+	if(c == '\n'){
+      fprintf (listfile, "\r");
+      fprintf (outfile, "\r");
+	}
+#endif
       fprintf (listfile, "%c", c);
       fprintf (outfile, "%c", c);
     }

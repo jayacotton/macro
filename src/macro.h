@@ -73,9 +73,15 @@ typedef struct macro_record {
 #define NUMBER 		0x1000
 #define ARITHMATIC	0x2000
 
+#ifdef CPM
+#define Dmac	".MAC"
+#define Dout	".ASM"
+#define Dlst	".LIS"
+#else
 #define Dmac	".mac"
 #define Dout	".asm"
 #define Dlst	".list"
+#endif
 
 extern OP_CODE Instructions[];
 extern SYMBOL  *labels;

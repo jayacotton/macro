@@ -9,7 +9,7 @@
 # *****************************************************************************
 
 
-AM_CFLAGS = -g -Wall -fchkp-instrument-calls -fchkp-check-write 
+AM_CFLAGS = -g -Wall 
 
 bin_PROGRAMS = macro
 
