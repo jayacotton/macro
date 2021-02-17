@@ -5,7 +5,7 @@
 #include "macro.h"
 #include <stdlib.h>
 #include <malloc.h>
-#include <mcheck.h>
+//#include <mcheck.h>
 
 extern void Process0 (FILE *);
 extern void Process1 (FILE *);
@@ -40,7 +40,7 @@ main (int argc, char *argv[])
   heapinit (10000);
 	srand(8520474);
 #endif
-mtrace();
+//mtrace();
   if (argc < 2)
     {
       print_version ();
