@@ -1,16 +1,16 @@
 I have updated MACRO to V2.0
 
 This change introduces a macro library directive [ -L <library directory>]
-Also included is an arcatecture command [ -a <arch> ] to allow segregating macro implementation details.
+Also included is an architecture command [ -a <arch> ] to allow segregating macro implementation details.
 
 New start options.
 
-	[file names do not include extenstions]
+	[file names do not include extensions]
 	-in	Input file name		[.mac assumed]
 	-out	Output file name	[.asm assumed]
 	-list 	List file name		[.list assumed]
 	-version Print the version number.
-	-arch	Set the target machine archatecture.
+	-arch	Set the target machine architecture.
 		8080, z80, 68000, pdp11, etc.
 	-Library Set the macro library directory.
 
@@ -23,20 +23,20 @@ Part one : Pass0
 
 	Processing in pass0 is simply finding the words "macro" and "mend".
 
-	Macro creats a memory image of the text following the text line, and nameing
-	the image with the word following macro.  i.e.   \tmacro\tfred  would creat
+	Macro creates a memory image of the text following the text line, and naming
+	the image with the word following macro.  i.e.   \tmacro\tfred  would create
 	a memory image called fred.
 
 	Mend terminates the text collection of Macro.
 
 
-	Pass0 terminates when the root file text is exhasted.
+	Pass0 terminates when the root file text is exhausted.
 
 Part two:  Pass1
 
 	Things get exciting at this point.
 
-	During the pass0 phase we made memory images of macro things.  Now durring the
+	During the pass0 phase we made memory images of macro things.  Now during the
 	pass1 phase, we will look in the memory file for text globs the have the name
 	macro names.  When found we will expand these names into text.
 
@@ -56,25 +56,29 @@ Syntax of interest
 When pass1 encounters a string of text that has any of these characteristics then expansion
 takes place.
 
-^%indent		: if we find a % at the begining of an ident then we need to try
+^%indent		: if we find a % at the beginning of an ident then we need to try
 			: to convert that ident to something in our current macro text blob.
-			: this implise local or global text storage.
+			: this implies local or global text storage.
 			: i.e. local to this current macro, or global to the scope of the
 			: root file.
 
-<ident>	<name>	<expr>	: each name must be checked to see if its a macro in the memory blob.
+<ident>	<name>	<expr>	: each name must be checked to see if it's a macro in the memory blob.
 			: If we find a name then lots of stuff happens.
 
-Lets take expr for starters.
+Let's take expr for starters.
 
 		<expr>	: can be of the form %<ident>  or &<ident> or (expr) 
 
 ^<%ident> AIF	expr	: this is a process if/then sequence.  These control how a macro
-			: gets expanded and are not echoed to the output text file.
+			: gets expanded and is not echoed to the output text file.
 			:  (they could be listed at a commented text line.....)
 
 	GBLB	%ident  : this defines %ident as a global binary variable .
 
 ^<%ident> SETB	<expr>	:  this sets %ident to the value of binary expr. 
+
+
+
+
 
 
