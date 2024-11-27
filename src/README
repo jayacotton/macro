@@ -1,3 +1,19 @@
+I have updated MACRO to V2.0
+
+This change introduces a macro library directive [ -L <library directory>]
+Also included is an arcatecture command [ -a <arch> ] to allow segregating macro implementation details.
+
+New start options.
+
+	[file names do not include extenstions]
+	-in	Input file name		[.mac assumed]
+	-out	Output file name	[.asm assumed]
+	-list 	List file name		[.list assumed]
+	-version Print the version number.
+	-arch	Set the target machine archatecture.
+		8080, z80, 68000, pdp11, etc.
+	-Library Set the macro library directory.
+
 The macro preprocessor is broken into 2 parts.
 
 Part one : Pass0  
