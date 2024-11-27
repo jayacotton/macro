@@ -5,6 +5,8 @@
 #include "macro.h"
 #include <stdlib.h>
 #include <malloc.h>
+#include <getopt.h>
+
 //#include <mcheck.h>
 
 extern void Process0 (FILE *);
@@ -18,46 +20,117 @@ void
 print_version ()
 {
 #ifndef CPM
-  printf ("macro version 1.0 %s %s\n", __DATE__, __TIME__);
+  printf ("macro version 2.0 %s %s\n", __DATE__, __TIME__);
 #else
-  printf ("macro version 1.0\n");
+  printf ("macro version 2.0\n");
 #endif
 }
 
+void
+print_usage ()
+{
+  printf ("usage\n");
+  exit (0);
+}
+
+  char arch[80];
+  char libroot[80];
 int
 main (int argc, char *argv[])
 {
   MACRO_RECORD *cc;
   int i;
+  int c;
+  int digit_optind = 0;
   char listfilename[80];
   char outfilename[80];
   char filename[80];
+  int flagi;
+  int flago;
+  int flagl;
+  int flagLib;
+  int flagarch;
+
 
 #ifndef CPM
   extern int level;
   level = 0;
 #else
   heapinit (10000);
-	srand(8520474);
+  srand (8520474);
 #endif
 //mtrace();
-  if (argc < 2)
-    {
-      print_version ();
-      printf ("usage: macro file\n");
-      exit (1);
-    }
-
-  if (argc > 2)
-    print_version ();
-
   memset (filename, 0, 80);
   memset (outfilename, 0, 80);
   memset (listfilename, 0, 80);
+  memset (arch, 0, 80);
+  memset (libroot, 0, 80);
 
-  strcpy (filename, argv[1]);
-  strcpy (outfilename, argv[1]);
-  strcpy (listfilename, argv[1]);
+  flagi = flago = flagl = flagLib = flagarch = 0;
+
+  while (1)
+    {
+      int this_option_optind = optind ? optind : 1;
+      int option_index = 0;
+      static struct option long_options[] = {
+	{"in", required_argument, 0, 0},
+	{"out", required_argument, 0, 0},
+	{"list", required_argument, 0, 0},
+	{"version", no_argument, 0, 0},
+	{"library", required_argument, 0, 0},
+	{"arch", required_argument, 0, 0}
+      };
+
+      c = getopt_long (argc, argv, "iolLva", long_options, &option_index);
+      if (c == -1)
+	break;
+
+      switch (c)
+	{
+	case 'a':		// arch 8080/z80/pdp11/68000 etc.
+	      strcpy (arch, argv[optind++]);
+	      flagarch++;
+	  break;
+	case 'i':		// input file name
+	      strcpy (filename, argv[optind++]);
+	      flagi++;
+	  break;
+	case 'o':		// output file name
+	      strcpy (outfilename, argv[optind++]);
+	      flago++;
+	  break;
+	case 'l':		// list file name       
+	      strcpy (listfilename, argv[optind++]);
+	      flagl++;
+	  break;
+	case 'L':		// macro library root directory
+	      strcpy (libroot, argv[optind++]);
+	      flagLib++;
+	  break;
+	case 'v':		// version
+	  print_version ();
+	  break;
+	default:
+	  break;
+	}
+    }
+  if (optind < argc)
+    {
+      printf (" non - option ARGV - elements:");
+      while (optind < argc)
+	printf ("%s", argv[optind++]);
+      printf ("\n");
+    }
+
+// fill in the blanks 
+  if (!flagi)
+    print_usage ();
+
+  if (!flago)
+    strcpy (outfilename, filename);
+  if (!flagl)
+    strcpy (listfilename, filename);
+
   strcat (filename, Dmac);
   strcat (outfilename, Dout);
   strcat (listfilename, Dlst);
@@ -68,19 +141,19 @@ main (int argc, char *argv[])
 
   if (!infile)
     {
-      printf ("Can't open %s\n", filename);
+      printf (" Can 't open %s\n", filename);
       exit (2);
     }
   listfile = fopen (listfilename, "w");
   if (!listfile)
     {
-      printf ("Can't make a list file\n");
+      printf ("Can' t make a list file \n ");
       exit (2);
     }
   outfile = fopen (outfilename, "w");
   if (!outfile)
     {
-      printf ("Can't make an output file\n");
+      printf (" Can 't make an output file\n");
       exit (2);
     }
 
@@ -106,6 +179,8 @@ main (int argc, char *argv[])
   /* clean up and dump stats to list file */
 
   fprintf (listfile, "-------------------------------------------------\n");
+fprintf(listfile,"Macro library root: %s\n",libroot);
+fprintf(listfile,"Archatectur: %s\n",arch);
   if (macro_count == 1)
     {
       fprintf (listfile, "Created %d macro\n", macro_count);
