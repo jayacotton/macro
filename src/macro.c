@@ -129,6 +129,9 @@
 #include "macro.h"
 #include <stdlib.h>
 
+extern char libroot[];
+extern char arch[];
+
 /* because its not in the string.h file */
 #ifndef CPM
 char *strcasestr (const char *haystack, const char *needle);
@@ -956,7 +959,10 @@ Include (FILE * in)
   /* isolate the file name to open */
 
   memset (mylbuff, 0, 80);
-  cc = mylbuff;
+strcat(mylbuff,libroot);
+strcat(mylbuff,arch);
+strcat(mylbuff,"/");
+  cc = mylbuff + strlen(mylbuff);
   while (*gc == ' ')
     gc++;
   while (*gc != '"')
